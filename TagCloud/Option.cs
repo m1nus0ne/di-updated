@@ -10,7 +10,7 @@ public class Options
     [Option('s', "source", HelpText = "Set source path.", Default = @"..\..\..\Results\text.txt")]
     public string SourcePath { get; set; }
     
-    [Option('n', "name", HelpText = "Set name.", Default = "default.png")]
+    [Option('n', "name", HelpText = "Set name of result picture.", Default = "default.png")]
     public string Name { get; set; }
         
     [Option('c', "color", 
@@ -18,11 +18,12 @@ public class Options
                    Set color.
                    random - Random colors
                    #F0F0F0 - Color hex code
+                   gray - grayscale
                    """, 
         Default = "random")]
     public string ColorScheme { get; set; }
     
-    [Option('f', "font", HelpText = "Set font.", Default = "Arial")]
+    [Option('f', "font", HelpText = "Set font family", Default = "Arial")]
     public string Font { get; set; }
     
     [Option("size", HelpText = "Set font size.", Default = 20)]
@@ -49,7 +50,7 @@ public class Options
         Default = new[] { "PR", "PART", "CONJ", "INTJ" })]
     public string[] UnusedPartsOfSpeech { get; set; }
     
-    [Option("density", HelpText = "Set density.", Default = 0.1)]
+    [Option("density", HelpText = "Set spiral step.", Default = 0.1)]
     public double Density { get; set; }
     
     [Option("width", HelpText = "Set width.", Default = 100)]

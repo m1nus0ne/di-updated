@@ -1,15 +1,19 @@
 ﻿using System.Drawing;
+using TagCloudApplication;
 using TagCloudTests;
+using ColorConverter = TagCloud.Extensions.ColorConverter;
 
 namespace TagCloud;
 
-public class ConstantColorSelector : IColorSelector
+public class ConstantColorSelector(Color color) : IColorSelector
 {
-    private Color color;
-    public ConstantColorSelector(Color color)
-    {
-        this.color = color;
-    }
+    private Color _color = color;
+    public Color SetColor() => _color;
 
-    public Color SetColor() => color;
+    public bool IsMatch(Options options)
+    {
+        if (!ColorConverter.TryConvert(options.ColorScheme, out var convertedColor)) return false;
+        _color = convertedColor;
+        return true;
+    }
 }

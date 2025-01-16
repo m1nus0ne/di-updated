@@ -4,5 +4,5 @@ namespace TagCloud.Excluders;
 
 public interface IWordFilter
 {
-    IEnumerable<TextData> ExcludeWords(IEnumerable<TextData> data);
+    Dictionary<string, int> ExcludeWords(Dictionary<string, int> counts);
 }

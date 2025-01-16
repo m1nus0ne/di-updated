@@ -54,7 +54,7 @@ public class TagCloudDrawerTests
     }
 
     [Test]
-    public void DrawOneTundredRectangles()
+    public void DrawOneHundredRectangles()
     {
         var testRect = new TextRectangle(
             new Rectangle(0, 0, 1, 1),
@@ -65,7 +65,7 @@ public class TagCloudDrawerTests
         drawer.Draw(textRectangles);
         directory
             .EnumerateFiles()
-            .Count(file => file.Name.Contains(nameof(DrawOneTundredRectangles)))
+            .Count(file => file.Name.Contains(nameof(DrawOneHundredRectangles)))
             .Should()
             .Be(1);
     }

@@ -14,13 +14,14 @@ public class MyStemWordFilter : IWordFilter
         "INTJ" // междометие
     };
 
-    public IEnumerable<TextData> ExcludeWords(IEnumerable<TextData> data)
+    public Dictionary<string, int> ExcludeWords(Dictionary<string, int> counts)
     {
         var stem = new MyStem();
         stem.Parameters = "-lig";
-        foreach (var word in data)
+        var newCounts = new Dictionary<string, int>();
+        foreach (var (word, count) in counts)
         {
-            var analysis = stem.Analysis(word.Value);
+            var analysis = stem.Analysis(word);
             if (string.IsNullOrEmpty(analysis))
                 continue;
 
@@ -32,7 +33,9 @@ public class MyStemWordFilter : IWordFilter
 
             if (partsOfSpeech.Any(ForbidenSpeechParts.Contains))
                 continue;
-            yield return word;
+            newCounts.Add(word, count);
         }
+
+        return newCounts;
     }
 }

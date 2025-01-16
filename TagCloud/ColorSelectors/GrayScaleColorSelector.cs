@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using TagCloudApplication;
 
 namespace TagCloudTests;
 
@@ -11,4 +12,6 @@ public class GrayScaleColorSelector : IColorSelector
         var gray = random.Next(100, 200);
         return Color.FromArgb(gray, gray, gray);
     }
+
+    public bool IsMatch(Options options) => options.ColorScheme == "gray";
 }

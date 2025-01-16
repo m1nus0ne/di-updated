@@ -21,17 +21,16 @@ public class TagCloudGenerator
     public void Generate()
     {
         var rectangles = new List<TextRectangle>();
-
-        foreach (var word in handler.Handle().OrderByDescending(pair => pair.Value))
+        
+        foreach (var (word, count) in handler.Handle().OrderByDescending(pair => pair.Value))
         {
-            var (size, font) = measurer.GetTextRectangleSize(word.Value, word.Weight);
+            var (size, font) = measurer.GetTextRectangleSize(word, count);
             rectangles.Add(new TextRectangle(
                 layouter.PutNextRectangle(size),
-                word.Value,
+                word,
                 font
             ));
         }
-
         drawer.Draw(rectangles);
     }
 }

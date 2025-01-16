@@ -7,6 +7,8 @@ using TagCloud.WordFilters;
 using TagCloudApplication;
 using TagCloudTests;
 using ColorConverter = TagCloud.Extensions.ColorConverter;
+using System.Linq;
+using System.Reflection;
 
 namespace TagCloud;
 
@@ -31,14 +33,18 @@ public static class TagCloudServicesFactory
                 provider.Resolve<IColorSelector>()
             )).As<ICloudDrawer>().SingleInstance();
         
-        if (options.ColorScheme == "gray")
-            builder.RegisterType<RandomColorSelector>().As<IColorSelector>().SingleInstance();
-        if (options.ColorScheme == "random")
-            builder.RegisterType<GrayScaleColorSelector>().As<IColorSelector>().SingleInstance();
-        else if (ColorConverter.TryConvert(options.ColorScheme, out var color))
-            builder.Register(provider => new ConstantColorSelector(color)).As<IColorSelector>().SingleInstance();
-        else
-            builder.Register(provider => new ConstantColorSelector(Color.Black)).As<IColorSelector>().SingleInstance();
+        builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly())
+            .Where(t => t.IsAssignableTo<IColorSelector>())
+            .As<IColorSelector>()
+            .SingleInstance();
+
+        builder.Register<IColorSelector>(context =>
+        {
+            var colorSelectors = context.Resolve<IEnumerable<IColorSelector>>();
+            var selector = colorSelectors.FirstOrDefault(s => s.IsMatch(options));
+            
+            return selector ?? new ConstantColorSelector(Color.Black);
+        }).SingleInstance(); //при ресолве будет использоваться последний зарегистрированный класс
 
         builder.RegisterType<MyStemWordFilter>().As<IWordFilter>().SingleInstance();
         

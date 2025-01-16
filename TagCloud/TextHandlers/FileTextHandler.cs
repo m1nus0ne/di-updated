@@ -14,11 +14,11 @@ public class FileTextHandler : ITextHandler
         this.filter = filter;
     }
 
-    public IEnumerable<TextData> Handle()
+    public Dictionary<string,int> Handle()
     {
         var wordCounts = new Dictionary<string, int>();
         using var sr = new StreamReader(stream);
-
+        
         while (!sr.EndOfStream)
         {
             var word = sr.ReadLine()?.ToLower();
@@ -28,9 +28,8 @@ public class FileTextHandler : ITextHandler
             wordCounts[word]++;
         }
 
-        var data = wordCounts.Select(pair => new TextData() { Value = pair.Key, Weight = pair.Value });
-        data = filter.ExcludeWords(data);
+        wordCounts = filter.ExcludeWords(wordCounts);
 
-        return data;
+        return wordCounts;
     }
 }

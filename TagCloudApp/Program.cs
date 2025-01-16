@@ -13,7 +13,10 @@ class Program
                 if (TagCloudServicesFactory.ConfigureServiceAndTryGet<TagCloudGenerator>(option, out var generator))
                     generator.Generate();
                 else
-                    throw new Exception("Can't configure service");
+                {
+                    Console.WriteLine("Can't configure service");
+                    Console.Read();
+                }
             });
     }
 }
